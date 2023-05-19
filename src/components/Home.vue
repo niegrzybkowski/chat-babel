@@ -21,6 +21,23 @@
                 <form>
                   <h4 class="mb-3 text-center">Create your account</h4>
                   <hr/>
+                  <NotificationGroup group="all">
+                    <Notification v-slot="{ notifications }">
+                      <div
+                        v-for="notification in notifications.slice(0, 1)"
+                        :key="notification.id"
+                      >
+                        <div class="alert alert-primary w-100 opacity-75 justify-content-center p-1" role="alert"
+                          v-if="notification.type === 'info'">
+                          {{ notification.text }}
+                        </div>
+                        <div class="alert alert-danger w-100 opacity-75 justify-content-center p-2" role="alert"
+                          v-if="notification.type === 'error'">
+                          {{ notification.text }}
+                        </div>
+                      </div>
+                    </Notification>
+                  </NotificationGroup>
 
                   <!-- Username input -->
                   <div class="form-outline mb-4">
@@ -43,14 +60,14 @@
                   <!-- Repeat password input -->
                   <div class="form-outline mb-4">
                     <label class="form-label" for="repeat-password">Repeat password:</label>
-                    <input type="repeat-password" id="repeat-password" v-model="password2" class="form-control" />
+                    <input type="password" id="repeat-password" v-model="password2" class="form-control" />
                   </div>
 
                   <!-- Submit button -->
                   <div class="text-center">
-                    <button type="submit" class="btn btn-primary btn-block mb-4 w-100" @click="greet">
+                    <a class="btn btn-primary btn-block mb-4 w-100" @click="register">
                       SIGN UP
-                    </button>
+                    </a>
                   </div>
 
                   <div class="text-center">
@@ -64,31 +81,69 @@
       </div>
     </div>
   </section>
-  <button @click="register">CCCC</button>
 </template>
 
 <script>
-import testCognito from '/modules/cognito'
 import { userPool } from '/modules/cognito'
 import { notify } from 'notiwind'
+import { CognitoUserAttribute } from 'amazon-cognito-identity-js'
 
 export default {
   data() {
     return {
-      username: ''
+      username: '',
+      email: '',
+      password1: '',
+      password2: ''
     }
   },
   methods: {
     register() {
       if (this.password1 != this.password2) {
-        console.log("!=")
-        notify({
-          group: "foo",
-          title: "Success",
-          text: "Your account was registered!"
-        }, 4000) // 4s
+        return notify({
+          group: "all",
+          type: "error",
+          text: "Passwords do not match!"
+        }, -1)
       }
-      console.log(this.username)
+
+      if (!(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(this.email))) {
+        return notify({
+          group: "all",
+          type: "error",
+          text: "Invalid email address"
+        }, -1)
+      }
+
+      let attributeList = [];
+
+      const dataEmail = {
+        Name: 'email',
+        Value: 'jaimegimillo@gmail.com',
+      };
+
+      const attributeEmail = new CognitoUserAttribute(dataEmail);
+      attributeList.push(attributeEmail);
+
+      userPool.signUp(this.username, this.password1, attributeList, null, function(
+        err,
+        result
+      ) {
+        if (err) {
+          return notify({
+            group: "all",
+            type: "error",
+            text: err.message
+          }, -1)
+        }
+        else {
+          return notify({
+            group: "all",
+            type: "info",
+            text: "Your account has been successfully created. You will now receive an email for verification"
+          }, -1)
+        }
+      });
     }
   }
 }
