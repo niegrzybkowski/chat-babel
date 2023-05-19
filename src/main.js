@@ -1,12 +1,14 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import Notifications from 'notiwind'
 import App from './App.vue'
 import Home from './components/Home.vue'
-import About from './components/About.vue'
+import Login from './components/Login.vue'
+
 
 const routes = [
   { path: '/', component: Home },
-  { path: '/about', component: About }
+  { path: '/login', component: Login }
 ]
 
 const router = createRouter({
@@ -14,6 +16,7 @@ const router = createRouter({
   routes: routes
 })
 
-const app = createApp(App)
-app.use(router)
-app.mount('#app')
+createApp(App)
+  .use(router)
+  .use(Notifications)
+  .mount('#app')
