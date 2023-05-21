@@ -21,23 +21,7 @@
                 <form>
                   <h4 class="mb-3 text-center">Create your account</h4>
                   <hr/>
-                  <NotificationGroup group="all">
-                    <Notification v-slot="{ notifications }">
-                      <div
-                        v-for="notification in notifications.slice(0, 1)"
-                        :key="notification.id"
-                      >
-                        <div class="alert alert-primary w-100 opacity-75 justify-content-center p-1" role="alert"
-                          v-if="notification.type === 'info'">
-                          {{ notification.text }}
-                        </div>
-                        <div class="alert alert-danger w-100 opacity-75 justify-content-center p-2" role="alert"
-                          v-if="notification.type === 'error'">
-                          {{ notification.text }}
-                        </div>
-                      </div>
-                    </Notification>
-                  </NotificationGroup>
+                  <Notification v-if="notification" :message="message" :type="type"/>
 
                   <!-- Username input -->
                   <div class="form-outline mb-4">
@@ -64,12 +48,12 @@
                   </div>
 
                   <!-- Submit button -->
-                  <div class="text-center">
-                    <a class="btn btn-primary btn-block mb-4 w-100" @click="register">
+                  <div class="text-center" style="height: 50px;">
+                    <a v-if="!registering" class="btn btn-primary btn-block mb-4 w-100" @click="register">
                       SIGN UP
                     </a>
+                    <pulse-loader v-else color="#0D6EFD" class="pt-2"></pulse-loader>
                   </div>
-
                   <div class="text-center">
                     <p>Already registered? <a href="/login">Sign in</a></p>
                   </div>
@@ -84,68 +68,70 @@
 </template>
 
 <script>
-import { userPool } from '/modules/cognito'
-import { notify } from 'notiwind'
-import { CognitoUserAttribute } from 'amazon-cognito-identity-js'
+  import { CognitoUserAttribute } from 'amazon-cognito-identity-js'
+  import userPool from '../modules/cognito'
+  import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+  import Notification from './Notification.vue'
 
-export default {
-  data() {
-    return {
-      username: '',
-      email: '',
-      password1: '',
-      password2: ''
-    }
-  },
-  methods: {
-    register() {
-      if (this.password1 != this.password2) {
-        return notify({
-          group: "all",
-          type: "error",
-          text: "Passwords do not match!"
-        }, -1)
+  export default {
+    data() {
+      return {
+        registering: false,
+        notification: false,
+        username: '',
+        email: '',
+        password1: '',
+        password2: '',
+        message: '',
+        type: 'info'
       }
+    },
+    methods: {
+      error(message) {
+        this.notification = true;
+        this.message = message;
+        this.type = "error";
+      },
+      info(message) {
+        this.notification = true;
+        this.message = message;
+        this.type = "info";
+      },
+      async register() {
+        if (this.password1 != this.password2) {
+          return this.error("Passwords do not match!")
+        }
+        if (!(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(this.email))) {
+          return this.error("Invalid email address.")
+        }
 
-      if (!(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(this.email))) {
-        return notify({
-          group: "all",
-          type: "error",
-          text: "Invalid email address"
-        }, -1)
+        let attributeList = [];
+        const dataEmail = {
+          Name: "email",
+          Value: this.email,
+        };
+        const attributeEmail = new CognitoUserAttribute(dataEmail);
+        attributeList.push(attributeEmail);
+
+        let component = this;
+        this.registering = true;
+        await new Promise((resolve, reject) =>
+          userPool.signUp(this.username, this.password1, attributeList, null, function (err, result) {
+            if (err) {
+              resolve(component.error(err.message))
+            }
+            else {
+              resolve(component.info("Your account has been successfully created. "+
+              "You will now receive an email for verification."))
+            }
+          })
+        )
+        this.registering = false;
       }
-
-      let attributeList = [];
-
-      const dataEmail = {
-        Name: 'email',
-        Value: 'jaimegimillo@gmail.com',
-      };
-
-      const attributeEmail = new CognitoUserAttribute(dataEmail);
-      attributeList.push(attributeEmail);
-
-      userPool.signUp(this.username, this.password1, attributeList, null, function(
-        err,
-        result
-      ) {
-        if (err) {
-          return notify({
-            group: "all",
-            type: "error",
-            text: err.message
-          }, -1)
-        }
-        else {
-          return notify({
-            group: "all",
-            type: "info",
-            text: "Your account has been successfully created. You will now receive an email for verification"
-          }, -1)
-        }
-      });
+    },
+    components: {
+      Notification,
+      PulseLoader
     }
-  }
 }
 </script>
-
