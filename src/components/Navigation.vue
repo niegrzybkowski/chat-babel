@@ -21,9 +21,15 @@
         </li>
       </ul>
     </div>
-    <span class="navbar-text mx-5">
+    <span class="navbar-text me-4">
       <strong>{{ username }}</strong>
     </span>
+    <select class="form-select me-5" style="width: fit-content;" @change="onLanguageChange($event)" v-model="language">
+      <option value="en">English</option>
+      <option value="pl">Polish</option>
+      <option value="es">Spanish</option>
+      <option value="fr">French</option>
+    </select>
   </nav>
 </template>
 
@@ -34,14 +40,21 @@
     methods: {
       logout() {
         localStorage.setItem('accessToken', '');
+        this.$store.commit('accessToken', '');
         localStorage.setItem('username', '');
-        this.$store.commit('logout');
+        this.$store.commit('username', '');
+      },
+      onLanguageChange(event) {
+        const newLanguage = event.target.value;
+        localStorage.setItem('language', newLanguage);
+        this.$store.commit('updateLanguage', newLanguage);
       }
     },
     computed: {
       ...mapState([
         'accessToken',
-        'username'
+        'username',
+        'language'
       ])
     }
   }

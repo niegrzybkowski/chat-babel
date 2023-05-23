@@ -3,7 +3,8 @@ import { createStore } from 'vuex'
 const store = createStore({
   state: {
     accessToken: '',
-    username: ''
+    username: '',
+    language: ''
   },
   mutations: {
     updateAccessToken: (state, accessToken) => {
@@ -12,9 +13,8 @@ const store = createStore({
     updateUsername: (state, username) => {
       state.username = username;
     },
-    logout: state => {
-      state.accessToken = ''
-      state.username = ''
+    updateLanguage: (state, language) => {
+      state.language = language;
     }
   }
 })
