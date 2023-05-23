@@ -6,7 +6,7 @@
           <div class="col-lg-6 mb-5 mb-lg-0" id="register-wrap">
             <div class="card shadow">
               <div class="card-body py-5 px-md-5">
-                  <h3 class="text-primary">Join an existing room:</h3>
+                  <h3 class="text-primary">{{ localizations[current_language].join_header }}</h3>
                   <hr/>
                   <!-- Room container -->
                   <table class="m-auto">
@@ -18,13 +18,13 @@
                       </td>
                       <td>
                         <a class="btn float-right btn-primary btn-block m-2 w-10" @click="join_room(room)">
-                            Enter
+                          {{ localizations[current_language].enter_button }}
                         </a>
                       </td>
                     </tr>
                   </table>
                   <a class="btn float-right btn-primary btn-block my-2 w-10" @click="refresh_room_list">
-                    Refresh
+                    {{ localizations[current_language].refresh }}
                   </a>
               </div>
             </div>
@@ -32,7 +32,7 @@
           <div class="col-lg-6 mb-5 mb-lg-0" id="register-wrap">
             <div class="card shadow">
               <div class="card-body py-5 px-md-5">
-                  <h3 class="text-primary">Or create a new one:</h3>
+                  <h3 class="text-primary">{{ localizations[current_language].create_header }}</h3>
                   <!-- Room container -->
                   <form>
                     <hr/>
@@ -40,23 +40,23 @@
 
                     <!-- Username input -->
                     <div class="form-outline mb-4">
-                      <label class="form-label" for="roomname">Room name:</label>
+                      <label class="form-label" for="roomname">{{ localizations[current_language].room_name_label }}</label>
                       <input id="roomname" v-model="roomname" class="form-control" />
                     </div>
 
                     <!-- Password input -->
                     <div class="form-outline mb-2">
                       <input type="checkbox"  v-model="formal" id="formal" name="formal">
-                      <label class="form-label m-2" for="formal">Formal</label>
+                      <label class="form-label m-2" for="formal">{{ localizations[current_language].formal_label }}</label>
                       
                       <input type="checkbox"  v-model="profanities" id="profanities" name="profanities">
-                      <label class="form-label m-2" for="profanities">Filter profanities</label>
+                      <label class="form-label m-2" for="profanities">{{ localizations[current_language].profanities_label }}</label>
                     </div>
 
                     <!-- Submit button -->
                     <div class="text-center" style="height: 50px;">
                       <a class="btn btn-primary btn-block mb-4 w-100" @click="login">
-                        CREATE ROOM
+                        {{ localizations[current_language].create_submit }}
                       </a>
                     </div>
                   </form>
@@ -73,7 +73,6 @@
 
 
 <script>
-  import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
   export default {
     data() {
       return {
@@ -94,7 +93,20 @@
             room_name: "Test4 but with a very very long name",
             room_id: "123"
           },
-        ]
+        ],
+        current_language: "en",
+        localizations: {
+          "en": {
+            join_header: "Join an existing room:",
+            enter_button: "Enter",
+            refresh: "Refresh",
+            create_header: "Or create a new one:",
+            room_name_label: "Room name:",
+            formal_label: "Formal",
+            profanities_label: "Do not filter profanities",
+            create_submit: "CREATE ROOM"
+          }
+        }
       }
     },
     methods: {
