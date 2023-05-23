@@ -17,7 +17,7 @@
                         </p>
                       </td>
                       <td>
-                        <a class="btn float-right btn-primary btn-block m-2 w-10" @click="join_room(room)">
+                        <a class="btn float-right btn-primary btn-block m-2 w-10" :href="'/chat/' + room.NAME ">
                           {{ localizations[current_language].enter_button }}
                         </a>
                       </td>
@@ -63,8 +63,6 @@
               </div>
             </div>
           </div>
-
-          
         </div>
       </div>
     </div>
@@ -117,12 +115,13 @@ import axios from 'axios'
       },
       async create_room() {
         console.log(this.formal)
-        axios.post("https://5s576s9sn0.execute-api.us-east-1.amazonaws.com/alpha/createroom", {
+        axios.post("https://ek5ajs509b.execute-api.us-east-1.amazonaws.com/createRoom", {
           "NAME": this.roomname,
           "Formality": this.formal, 
           "Profanity": this.profanities
         }).then((res) => {
           console.log(res)
+          window.location.href = "/chat/" + this.roomname;
         }).catch((err) => {
           console.error(err)
         })
