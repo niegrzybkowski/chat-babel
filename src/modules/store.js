@@ -4,7 +4,7 @@ const store = createStore({
   state: {
     accessToken: '',
     username: '',
-    language: ''
+    language: 'en'
   },
   mutations: {
     updateAccessToken: (state, accessToken) => {
