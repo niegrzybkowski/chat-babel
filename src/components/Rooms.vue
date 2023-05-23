@@ -41,7 +41,7 @@
                     <!-- Username input -->
                     <div class="form-outline mb-4">
                       <label class="form-label" for="roomname">{{ localizations[current_language].room_name_label }}</label>
-                      <input id="roomname" v-model="roomname" class="form-control" />
+                      <input id="roomname" v-model="roomname" class="form-control" required/>
                     </div>
 
                     <!-- Password input -->
@@ -117,9 +117,10 @@ import axios from 'axios'
       },
       async create_room() {
         console.log(this.formal)
-        axios.post("", {
+        axios.post("https://5s576s9sn0.execute-api.us-east-1.amazonaws.com/alpha/createroom", {
           "NAME": this.roomname,
-          "Settings": {"Formality": this.formal, "Profanity": this.profanities}
+          "Formality": this.formal, 
+          "Profanity": this.profanities
         }).then((res) => {
           console.log(res)
         }).catch((err) => {
