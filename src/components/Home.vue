@@ -49,10 +49,11 @@
 
                   <!-- Submit button -->
                   <div class="text-center" style="height: 50px;">
-                    <a v-if="!registering" class="btn btn-primary btn-block mb-4 w-100" @click="register">
+                    <pulse-loader v-if="registering" color="#0D6EFD" class="pt-2"></pulse-loader>
+                    <a v-else class="btn btn-primary btn-block mb-4 w-100" @click="register">
                       SIGN UP
                     </a>
-                    <pulse-loader v-else color="#0D6EFD" class="pt-2"></pulse-loader>
+                    
                   </div>
                   <div class="text-center">
                     <p>Already registered? <a href="/login">Sign in</a></p>

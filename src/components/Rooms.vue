@@ -6,10 +6,11 @@
           <div class="col-lg-6 mb-5 mb-lg-0" id="register-wrap">
             <div class="card shadow">
               <div class="card-body py-5 px-md-5">
-                  <h3 class="text-primary">{{ localizations[current_language].join_header }}</h3>
+                  <h3 class="text-primary text-center">{{ localizations[current_language].join_header }}</h3>
                   <hr/>
+                  <clip-loader v-if="loadingRooms" color="gray" class="pt-2"></clip-loader>
                   <!-- Room container -->
-                  <table class="m-auto">
+                  <table class="m-auto" v-else>
                     <tr class="border w-96 p-4" v-for="room in room_list">
                       <td>
                         <p class="m-2">
@@ -71,7 +72,8 @@
 
 
 <script>
-import axios from 'axios'
+  import axios from 'axios'
+  import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
 
   export default {
     mounted() {
@@ -79,6 +81,7 @@ import axios from 'axios'
     },
     data() {
       return {
+        loadingRooms: true,
         formal: false,
         profanities: false,
         room_list: [],
@@ -110,7 +113,8 @@ import axios from 'axios'
         let component = this;
         axios.get("https://ek5ajs509b.execute-api.us-east-1.amazonaws.com/getRooms")
         .then((res) => {
-          component.room_list = res.data.items
+          component.room_list = res.data.items;
+          this.loadingRooms = false;
         })
       },
       async create_room() {
@@ -127,5 +131,8 @@ import axios from 'axios'
         })
       }
     },
+    components: {
+      ClipLoader
+    }
 }
 </script>
