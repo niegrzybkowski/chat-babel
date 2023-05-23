@@ -13,7 +13,7 @@
                     <tr class="border w-96 p-4" v-for="room in room_list">
                       <td>
                         <p class="m-2">
-                            {{ room.room_name }}
+                            {{ room.NAME }}
                         </p>
                       </td>
                       <td>
@@ -23,7 +23,7 @@
                       </td>
                     </tr>
                   </table>
-                  <a class="btn float-right btn-primary btn-block my-2 w-10" @click="refresh_room_list">
+                  <a class="btn float-right btn-primary btn-block my-2 w-10" @click="fetch_rooms">
                     {{ localizations[current_language].refresh }}
                   </a>
               </div>
@@ -55,7 +55,7 @@
 
                     <!-- Submit button -->
                     <div class="text-center" style="height: 50px;">
-                      <a class="btn btn-primary btn-block mb-4 w-100" @click="login">
+                      <a class="btn btn-primary btn-block mb-4 w-100" @click="create_room">
                         {{ localizations[current_language].create_submit }}
                       </a>
                     </div>
@@ -73,27 +73,17 @@
 
 
 <script>
+import axios from 'axios'
+
   export default {
+    mounted() {
+      this.fetch_rooms()
+    },
     data() {
       return {
-        room_list: [
-          {
-            room_name: "Test1",
-            room_id: "123"
-          },
-          {
-            room_name: "Test2",
-            room_id: "123"
-          },
-          {
-            room_name: "Test3",
-            room_id: "123"
-          },
-          {
-            room_name: "Test4 but with a very very long name",
-            room_id: "123"
-          },
-        ],
+        formal: false,
+        profanities: false,
+        room_list: [],
         current_language: "en",
         localizations: {
           "en": {
@@ -110,11 +100,31 @@
       }
     },
     methods: {
-      refresh_room_list() {
-        this.room_list.push({room_name: "Test from refresh", room_id: "123"})
-      },
       join_room(room) {
         console.log(room)
+      },
+      error(message) {
+        this.notification = true
+        this.message = message
+        this.type = "error"
+      },
+      async fetch_rooms() {
+        let component = this;
+        axios.get("https://ek5ajs509b.execute-api.us-east-1.amazonaws.com/getRooms")
+        .then((res) => {
+          component.room_list = res.data.items
+        })
+      },
+      async create_room() {
+        console.log(this.formal)
+        axios.post("", {
+          "NAME": this.roomname,
+          "Settings": {"Formality": this.formal, "Profanity": this.profanities}
+        }).then((res) => {
+          console.log(res)
+        }).catch((err) => {
+          console.error(err)
+        })
       }
     },
 }
