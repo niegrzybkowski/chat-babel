@@ -6,45 +6,34 @@
           <div class="col-lg-6 mb-5 mb-lg-0 m-auto">
             <div class="card shadow">
               <div class="card-body py-5 px-md-5">
-                  <h3 class="text-primary">{{ localizations[current_language].chat_header }} {{ $route.params.roomname }}</h3>
-                  <hr/>
-                  <div class="m-2">
-                    <label class="m-2" for="lang">Translate language</label>
-                    <select name="lang" id="lang" v-model="lang">
-                      <option value="en">English</option>
-                      <option value="pl">Polish</option>
-                      <option value="es">Spanish</option>
-                      <option value="fr">French</option>
-                    </select>
-                  </div>
-                  <!-- Room container -->
-                  <div style="" class="m-auto">
-                    <div class="border p-4" v-for="message in translated_messages">
-                      <div style="width: 64rem;">
-                        <p style="font-weight: bold;" class="m-2">
-                            {{ message.Sender }}:
-                        </p>
-                        <p>
-                          {{ message.Text }}
-                        </p>
-                        <p v-if="message.hasOwnProperty('Translation')">
-                          {{ localizations[current_language].translation_prefix }} {{ message.Translation }}
-                        </p>
-                        <a v-else class="btn float-right btn-primary btn-block m-2 w-10" @click="join_room(room)">
-                          {{ localizations[current_language].translate }}
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <div class="form-outline mb-4">
-                      <input type="message" id="message" v-model="message" class="form-control m-2"/>
-                      <a class="btn float-right btn-primary btn-block m-2 mt-0 w-10" @click="send_message">
-                        {{ localizations[current_language].send }}
+                <h3 class="text-primary text-center">{{ localizations[this.language].chat_header }} {{ $route.params.roomName }}</h3>
+                <hr/>
+                <div class="m-auto">
+                  <div class="border p-4" v-for="message in translated_messages">
+                    <div style="width: 64rem;">
+                      <p style="font-weight: bold;" class="m-2">
+                          {{ message.Sender }}:
+                      </p>
+                      <p>
+                        {{ message.Text }}
+                      </p>
+                      <p v-if="message.hasOwnProperty('Translation')">
+                        {{ localizations[language].translation_prefix }} {{ message.Translation }}
+                      </p>
+                      <a v-else class="btn float-right btn-primary btn-block m-2 w-10" @click="join_room(room)">
+                        {{ localizations[language].translate }}
                       </a>
                     </div>
-                    
                   </div>
+                </div>
+                <div>
+                  <div class="form-outline mb-4">
+                    <input type="message" id="message" v-model="newMessage" class="form-control m-2"/>
+                    <a class="btn float-right btn-primary btn-block m-2 mt-0 w-10" @click="send_message">
+                      {{ localizations[language].send }}
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -56,13 +45,16 @@
 
 
 <script>
-import axios from 'axios'
+  import axios from 'axios'
+  import { mapState } from 'vuex'
 
   export default {
     mounted() {
+      this.fetch_messages();
     },
     data() {
       return {
+        /*
         messages: [
           {
             "Sender": "John",
@@ -89,9 +81,11 @@ import axios from 'axios'
             "ROOM_ID": "testaaaaaaaaaaaa",
             "Text": "hello world"
           }
-        ],
-        current_language: "en", //todo: move to navbar and global state
-        lang: "en", //todo: move to navbar and global state
+        ],*/
+        url: "https://ek5ajs509b.execute-api.us-east-1.amazonaws.com",
+        roomName: this.$route.params.roomName,
+        newMessage: '',
+        messages: [],
         localizations: {
           "en": {
             chat_header: "Room:",
@@ -107,6 +101,10 @@ import axios from 'axios'
       }
     },
     computed: {
+      ...mapState([
+        'username',
+        'language'
+      ]),
       translated_messages() {
         let component = this
         return this.messages.map((message) => {
@@ -114,29 +112,38 @@ import axios from 'axios'
             "Sender": message.Sender,
             "Text": message.Text
           }
-          if (message.hasOwnProperty("Translations") && message.Translations.hasOwnProperty(component.lang)) {
-            translated_message.Translation = message.Translations[component.lang]
+          if (message.hasOwnProperty("Translations") && message.Translations.hasOwnProperty(component.language)) {
+            translated_message.Translation = message.Translations[component.language]
           }
           return translated_message
         })
       }
     },
     methods: {
-      join_room(room) {
-        console.log(room)
-      },
-      error(message) {
-        this.notification = true
-        this.message = message
-        this.type = "error"
+      join_room() {
+        console.log(this.language);
       },
       async fetch_messages() {
         let component = this;
-        axios.get("https://ek5ajs509b.execute-api.us-east-1.amazonaws.com/getMessages")
+        axios.get(this.url + "/getMessages" + "?RoomID=" + this.roomName)
         .then((res) => {
-          component.room_list = res.data.items
+          component.messages = res.data.items;
+          console.log(component.messages);
         })
       },
+      async send_message() {
+        if (this.newMessage == '') {
+          return;
+        }
+        axios.post(this.url + "/sendMessage", {
+          "ROOM_ID": this.roomName,
+          "Sender": this.username,
+          "Text": this.newMessage
+        })
+        .then(() => {
+          this.fetch_messages();
+        })
+      }
     },
-}
+  }
 </script>
