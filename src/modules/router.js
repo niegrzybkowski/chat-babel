@@ -6,10 +6,10 @@ import Chat from '../components/Chat.vue'
 import store from './store'
 
 const routes = [
-  { path: '/', component: Home },
-  { path: '/login', component: Login },
-  { path: '/rooms', component: Rooms },
-  { path: '/chat/:roomname', component: Chat },
+  { path: '/', component: Home, name: 'home' },
+  { path: '/login', component: Login, name: 'login' },
+  { path: '/rooms', component: Rooms, name: 'rooms' },
+  { path: '/rooms/:roomname', component: Chat, name: 'chat' },
 ]
 
 const router = createRouter({
@@ -18,8 +18,9 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from) => {
-  if (store.state.accessToken == '' && to.path == '/rooms') {
-    return '/'
+  console.log(to);
+  if (store.state.accessToken == '' && (to.name == 'rooms' || to.name == 'chat') || !to.name) {
+    return '/';
   }
 })
 

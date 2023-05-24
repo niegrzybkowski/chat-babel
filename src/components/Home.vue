@@ -53,7 +53,6 @@
                     <a v-else class="btn btn-primary btn-block mb-4 w-100" @click="register">
                       SIGN UP
                     </a>
-                    
                   </div>
                   <div class="text-center">
                     <p>Already registered? <a href="/login">Sign in</a></p>
