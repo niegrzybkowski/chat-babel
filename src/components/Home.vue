@@ -67,7 +67,7 @@
   </section>
 </template>
 
-<script>
+<script allowsJS="true">
   import { CognitoUserAttribute } from 'amazon-cognito-identity-js'
   import userPool from '../modules/cognito'
   import PulseLoader from 'vue-spinner/src/PulseLoader.vue'

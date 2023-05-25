@@ -1,9 +1,7 @@
 <template>
   <Navigation/>
   <div class="p-5 mt-5">
-    <div class="d-flex justify-content-center">
-      <router-view/>
-    </div>
+    <router-view/>
   </div>
 </template>
 
