@@ -30,13 +30,13 @@
                         <i>{{ message.Translations[this.language]}}</i>
                       </p>
                       <pulse-loader v-else-if="message.translating" color="gray" size="11px"></pulse-loader>
-                      <a v-else class="btn float-right btn-outline-success btn-sm" @click="translate_message(message)">
+                      <a v-else class="btn float-right btn-outline-success btn-sm text-uppercase" @click="translate_message(message)">
                         {{ localizations[this.language].translate }}
                       </a>
                     </div>
                   </div>
-                  <div class="form-outline mt-4">
-                    <input type="message" id="message" v-model="newMessage" class="form-control"/>
+                  <div class="form-outline mt-4 w-50 mx-auto">
+                    <textarea id="message" v-model="newMessage" class="form-control" style="resize: none;"></textarea>
                     <a class="btn float-right btn-primary btn-block mt-2" @click="send_message">
                       {{ localizations[language].send }}
                     </a>
@@ -100,7 +100,7 @@
         localizations: {
           "en": {
             chat_header: "Room:",
-            translate: "TRANSLATE",
+            translate: "Translate",
             translation_prefix: "Translation:",
             send: "Send message",
             room_name_label: "Room name:",
@@ -110,7 +110,7 @@
           },
           "es": {
             chat_header: "Room:",
-            translate: "Translate Message",
+            translate: "Translate",
             translation_prefix: "Translation:",
             send: "Send message",
             room_name_label: "Room name:",
@@ -120,7 +120,7 @@
           },
           "fr": {
             chat_header: "Room:",
-            translate: "Translate Message",
+            translate: "Translate",
             translation_prefix: "Translation:",
             send: "Send message",
             room_name_label: "Room name:",
@@ -130,7 +130,7 @@
           },
           "pl": {
             chat_header: "Room:",
-            translate: "Translate Message",
+            translate: "Translate",
             translation_prefix: "Translation:",
             send: "Send message",
             room_name_label: "Room name:",
@@ -176,6 +176,9 @@
         })
       },
       async send_message() {
+        console.log(this.newMessage);
+        console.log(this.username);
+        console.log(this.roomName);
         if (this.newMessage == '') {
           return;
         }
