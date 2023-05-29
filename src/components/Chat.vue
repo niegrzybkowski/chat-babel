@@ -165,7 +165,7 @@
         console.log(this.language);
       },
       async fetch_messages() {
-        this.fetchingMessages = true;
+        //this.fetchingMessages = true;
         axios.get(this.url + "/getMessages?RoomID=" + this.roomName)
         .then((res) => {
           this.messages = res.data.items.sort((m1, m2) => m1.Time - m2.Time);
@@ -176,9 +176,6 @@
         })
       },
       async send_message() {
-        console.log(this.newMessage);
-        console.log(this.username);
-        console.log(this.roomName);
         if (this.newMessage == '') {
           return;
         }
