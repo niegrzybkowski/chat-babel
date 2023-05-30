@@ -5,13 +5,11 @@
         <div class="row gx-lg-5 align-items-center">
           <div class="col-lg-6 mb-5 mb-lg-0">
             <h1 class="my-5 display-3 fw-bold ls-tight">
-              Welcome to <br/>
+              {{ current_localization.welcome }} <br/>
               <span class="text-primary">Chat Babel</span>
             </h1>
             <p style="color: hsl(217, 10%, 50.8%)">
-              Chat Babel is a serverless application built in the AWS Cloud that allows users to chat
-              across languages, using a machine learning translation model to translate messages.
-              Create your own account now and start chatting with your friends!
+              {{ current_localization.intro }}
             </p>
           </div>
 
@@ -19,31 +17,31 @@
             <div class="card shadow">
               <div class="card-body py-5 px-md-5">
                 <form>
-                  <h4 class="mb-3 text-center">Create your account</h4>
+                  <h4 class="mb-3 text-center">{{ current_localization.create_account_header }}</h4>
                   <hr/>
                   <Notification v-if="notification" :message="message" :type="type"/>
 
                   <!-- Username input -->
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="username">Username:</label>
+                    <label class="form-label" for="username">{{ current_localization.username_label }}</label>
                     <input type="username" id="username" v-model="username" class="form-control"/>
                   </div>
 
                   <!-- Email input -->
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="email">Email address:</label>
+                    <label class="form-label" for="email">{{ current_localization.email_label }}</label>
                     <input type="email" id="email" v-model="email" class="form-control" />
                   </div>
 
                   <!-- Password input -->
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="password">Password:</label>
+                    <label class="form-label" for="password">{{ current_localization.password1_label }}</label>
                     <input type="password" id="password" v-model="password1" class="form-control" />
                   </div>
 
                   <!-- Repeat password input -->
                   <div class="form-outline mb-4">
-                    <label class="form-label" for="repeat-password">Repeat password:</label>
+                    <label class="form-label" for="repeat-password">{{ current_localization.password2_label }}</label>
                     <input type="password" id="repeat-password" v-model="password2" class="form-control" />
                   </div>
 
@@ -51,11 +49,11 @@
                   <div class="text-center" style="height: 50px;">
                     <pulse-loader v-if="registering" color="#0D6EFD" class="pt-2"></pulse-loader>
                     <a v-else class="btn btn-primary btn-block mb-4 w-100" @click="register">
-                      SIGN UP
+                      {{ current_localization.register_button }}
                     </a>
                   </div>
                   <div class="text-center">
-                    <p>Already registered? <a href="/login">Sign in</a></p>
+                    <p> {{ current_localization.login_alternative_label }} <a href="/login"> {{ current_localization.login_alternative_link }} </a></p>
                   </div>
                 </form>
               </div>
@@ -83,8 +81,31 @@
         password1: '',
         password2: '',
         message: '',
-        type: 'info'
+        type: 'info',
+        default_language: "en",
+        localizations: {
+          "en": {
+            welcome: "Welcome to",
+            intro: "Chat Babel is a serverless application built in the AWS Cloud that allows users to chat\nacross languages, using a machine learning translation model to translate messages. Create your own account now and start chatting with your friends!",
+            create_account_header: "Create your account",
+            username_label: "Username:",
+            email_label: "Email address:",
+            password1_label: "Password:",
+            password2_label: "Repeat password:",
+            register_button: "SIGN UP",
+            login_alternative_label: "Already registered?",
+            login_alternative_link: "Sign in"
+          },
+        }
       }
+    },
+    computed: {
+       current_localization() {
+        if (!this.localizations[this.$store.state.language]){
+          return this.localizations[this.default_language]
+        }
+        return this.localizations[this.$store.state.language]
+       }
     },
     methods: {
       error(message) {
