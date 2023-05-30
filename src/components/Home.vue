@@ -24,25 +24,25 @@
                   <!-- Username input -->
                   <div class="form-outline mb-4">
                     <label class="form-label" for="username">{{ current_localization.username_label }}</label>
-                    <input type="username" id="username" v-model="username" class="form-control"/>
+                    <input autocomplete="username" type="username" id="username" v-model="username" class="form-control"/>
                   </div>
 
                   <!-- Email input -->
                   <div class="form-outline mb-4">
                     <label class="form-label" for="email">{{ current_localization.email_label }}</label>
-                    <input type="email" id="email" v-model="email" class="form-control" />
+                    <input autocomplete="email" type="email" id="email" v-model="email" class="form-control" />
                   </div>
 
                   <!-- Password input -->
                   <div class="form-outline mb-4">
                     <label class="form-label" for="password">{{ current_localization.password1_label }}</label>
-                    <input type="password" id="password" v-model="password1" class="form-control" />
+                    <input autocomplete="new-password" type="password" id="password" v-model="password1" class="form-control" />
                   </div>
 
                   <!-- Repeat password input -->
                   <div class="form-outline mb-4">
                     <label class="form-label" for="repeat-password">{{ current_localization.password2_label }}</label>
-                    <input type="password" id="repeat-password" v-model="password2" class="form-control" />
+                    <input autocomplete="new-password" type="password" id="repeat-password" v-model="password2" class="form-control" />
                   </div>
 
                   <!-- Submit button -->

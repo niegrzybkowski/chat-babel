@@ -11,13 +11,13 @@
             <!-- Username input -->
             <div class="form-outline mb-4">
               <label class="form-label" for="username">{{ current_localization.username_label }}</label>
-              <input type="username" id="username" v-model="username" class="form-control" />
+              <input autocomplete="username" type="username" id="username" v-model="username" class="form-control" />
             </div>
           
             <!-- Password input -->
             <div class="form-outline mb-4">
               <label class="form-label" for="password">{{ current_localization.password1_label }}</label>
-              <input type="password" id="password" v-model="password" class="form-control" />
+              <input autocomplete="current-password" type="password" id="password" v-model="password" class="form-control" />
             </div>
           
             <!-- Submit button -->
