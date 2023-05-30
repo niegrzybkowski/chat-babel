@@ -94,7 +94,10 @@
             password2_label: "Repeat password:",
             register_button: "SIGN UP",
             login_alternative_label: "Already registered?",
-            login_alternative_link: "Sign in"
+            login_alternative_link: "Sign in",
+            password_mismatch: "Passwords do not match!",
+            email_error: "Invalid email address.",
+            register_success: "Your account has been successfully created. You will now receive an email for verification.",
           },
         }
       }
@@ -108,6 +111,12 @@
        }
     },
     methods: {
+      get_localization() {
+        if (!this.localizations[this.$store.state.language]){
+          return this.localizations[this.default_language]
+        }
+        return this.localizations[this.$store.state.language]
+      },
       error(message) {
         this.notification = true;
         this.message = message;
@@ -120,10 +129,10 @@
       },
       async register() {
         if (this.password1 != this.password2) {
-          return this.error("Passwords do not match!")
+          return this.error(this.get_localization().password_mismatch)
         }
         if (!(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(this.email))) {
-          return this.error("Invalid email address.")
+          return this.error(this.get_localization().email_error)
         }
 
         let attributeList = [];
@@ -139,11 +148,10 @@
         await new Promise((resolve, reject) =>
           userPool.signUp(this.username, this.password1, attributeList, null, function (err, result) {
             if (err) {
-              resolve(component.error(err.message))
+              resolve(component.error(err.message)) // no real way to localize this...
             }
             else {
-              resolve(component.info("Your account has been successfully created. "+
-              "You will now receive an email for verification."))
+              resolve(component.info(this.get_localization().register_success))
             }
           })
         )
