@@ -6,7 +6,7 @@
           <div class="col-lg-6 mb-5 mb-lg-0">
             <div class="card shadow">
               <div class="card-body py-5 px-md-5" style="overflow: hidden; white-space: nowrap;">
-                <h3 class="text-primary text-center">{{ localizations[current_language].join_header }}</h3>
+                <h3 class="text-primary text-center">{{ current_localization.join_header }}</h3>
                 <hr/>
                 <clip-loader v-if="loadingRooms" color="gray" class="pt-2"></clip-loader>
                 <!-- Room container -->
@@ -19,14 +19,14 @@
                     </td>
                     <td class="text-end">
                       <a class="btn float-right btn-primary btn-block m-2 btn-sm" :href="'/rooms/' + room.NAME">
-                        {{ localizations[current_language].enter_button }}
+                        {{ current_localization.enter_button }}
                       </a>
                     </td>
                   </tr>
                 </table>
                 <div class="text-center" v-if="!loadingRooms">
                   <a class="btn float-right btn-secondary btn-block mt-3" @click="fetch_rooms">
-                    {{ localizations[current_language].refresh }}
+                    {{ current_localization.refresh }}
                   </a>
                 </div>
               </div>
@@ -37,30 +37,30 @@
               <div class="card-body py-5 px-md-5">
                 <!-- Room container -->
                 <form>
-                  <h3 class="text-primary text-center">{{ localizations[current_language].create_header }}</h3>
+                  <h3 class="text-primary text-center">{{ current_localization.create_header }}</h3>
                   <hr/>
                   <Notification v-if="notification" :message="message" :type="type"/>
 
                   <!-- Roomname input -->
                   <div class="form-outline mb-2">
-                    <label class="form-label" for="roomName">{{ localizations[current_language].room_name_label }}</label>
+                    <label class="form-label" for="roomName">{{ current_localization.room_name_label }}</label>
                     <input id="roomName" v-model="roomName" class="form-control" required/>
                   </div>
 
                   <!-- Checkboxes -->
                   <div class="form-outline mb-3" style="overflow: hidden; white-space: nowrap;">
                     <input type="checkbox"  v-model="formal" id="formal" name="formal">
-                    <label class="form-label m-2" for="formal">{{ localizations[current_language].formal_label }}</label>
+                    <label class="form-label m-2" for="formal">{{ current_localization.formal_label }}</label>
                     
                     <input type="checkbox"  v-model="profanities" id="profanities" name="profanities">
-                    <label class="form-label m-2" for="profanities">{{ localizations[current_language].profanities_label }}</label>
+                    <label class="form-label m-2" for="profanities">{{ current_localization.profanities_label }}</label>
                   </div>
 
                   <!-- Submit button -->
                   <div class="text-center" style="height: 50px;">
                     <pulse-loader v-if="creatingRoom" color="#0D6EFD" class="pt-2"></pulse-loader>
                     <a v-else class="btn btn-primary btn-block w-100" @click="create_room">
-                      {{ localizations[current_language].create_submit }}
+                      {{ current_localization.create_submit }}
                     </a>
                   </div>
                 </form>
@@ -96,7 +96,7 @@
         formal: false,
         profanities: false,
         room_list: [],
-        current_language: "en",
+        default_language: "en",
         localizations: {
           "en": {
             join_header: "Join an existing room:",
@@ -107,9 +107,30 @@
             formal_label: "Formal",
             profanities_label: "Do not filter profanities",
             create_submit: "CREATE ROOM"
+          },
+          "pl": {
+            join_header: "aJoin an existing room:",
+            enter_button: "Enter",
+            refresh: "Refresh",
+            create_header: "Or create a new one:",
+            room_name_label: "Room name:",
+            formal_label: "Formal",
+            profanities_label: "Do not filter profanities",
+            create_submit: "CREATE ROOM"
           }
         }
       }
+    },
+    computed: {
+       language() {
+        return this.$store.state.language
+       },
+       current_localization() {
+        if (!this.localizations[this.$store.state.language]){
+          return this.localizations[this.default_language]
+        }
+        return this.localizations[this.$store.state.language]
+       }
     },
     methods: {
       join_room(room) {
