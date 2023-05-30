@@ -69,49 +69,6 @@
         newMessage: '',
         fetchingMessages: true,
         messages: [],
-        default_language: "en",
-        localizations: {
-          "en": {
-            chat_header: "Room:",
-            translate: "Translate",
-            translation_prefix: "Translation:",
-            send: "Send message",
-            room_name_label: "Room name:",
-            formal_label: "Formal",
-            profanities_label: "Do not filter profanities",
-            create_submit: "CREATE ROOM"
-          },
-          "es": {
-            chat_header: "Room:",
-            translate: "Translate",
-            translation_prefix: "Translation:",
-            send: "Send message",
-            room_name_label: "Room name:",
-            formal_label: "Formal",
-            profanities_label: "Do not filter profanities",
-            create_submit: "CREATE ROOM"
-          },
-          "fr": {
-            chat_header: "Room:",
-            translate: "Translate",
-            translation_prefix: "Translation:",
-            send: "Send message",
-            room_name_label: "Room name:",
-            formal_label: "Formal",
-            profanities_label: "Do not filter profanities",
-            create_submit: "CREATE ROOM"
-          },
-          "pl": {
-            chat_header: "Room:",
-            translate: "Translate",
-            translation_prefix: "Translation:",
-            send: "Send message",
-            room_name_label: "Room name:",
-            formal_label: "Formal",
-            profanities_label: "Do not filter profanities",
-            create_submit: "CREATE ROOM"
-          }
-        }
       }
     },
     computed: {

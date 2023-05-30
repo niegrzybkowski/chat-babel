@@ -53,17 +53,6 @@
         password: '',
         message: '',
         type: 'info',
-        default_language: "en",
-        localizations: {
-          "en": {
-            login_header: "Create your account",
-            username_label: "Username:",
-            password1_label: "Password:",
-            login_button: "ACCESS",
-            register_alternative_label: "Not registered yet?",
-            register_alternative_link: "Register"
-          },
-        }
       }
     },
     computed: {

@@ -82,24 +82,6 @@
         password2: '',
         message: '',
         type: 'info',
-        default_language: "en",
-        localizations: {
-          "en": {
-            welcome: "Welcome to",
-            intro: "Chat Babel is a serverless application built in the AWS Cloud that allows users to chat\nacross languages, using a machine learning translation model to translate messages. Create your own account now and start chatting with your friends!",
-            create_account_header: "Create your account",
-            username_label: "Username:",
-            email_label: "Email address:",
-            password1_label: "Password:",
-            password2_label: "Repeat password:",
-            register_button: "SIGN UP",
-            login_alternative_label: "Already registered?",
-            login_alternative_link: "Sign in",
-            password_mismatch: "Passwords do not match!",
-            email_error: "Invalid email address.",
-            register_success: "Your account has been successfully created. You will now receive an email for verification.",
-          },
-        }
       }
     },
     computed: {

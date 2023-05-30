@@ -96,29 +96,6 @@
         formal: false,
         profanities: false,
         room_list: [],
-        default_language: "en",
-        localizations: {
-          "en": {
-            join_header: "Join an existing room:",
-            enter_button: "Enter",
-            refresh: "Refresh",
-            create_header: "Or create a new one:",
-            room_name_label: "Room name:",
-            formal_label: "Formal",
-            profanities_label: "Do not filter profanities",
-            create_submit: "CREATE ROOM"
-          },
-          "pl": {
-            join_header: "aJoin an existing room:",
-            enter_button: "Enter",
-            refresh: "Refresh",
-            create_header: "Or create a new one:",
-            room_name_label: "Room name:",
-            formal_label: "Formal",
-            profanities_label: "Do not filter profanities",
-            create_submit: "CREATE ROOM"
-          }
-        }
       }
     },
     computed: {
