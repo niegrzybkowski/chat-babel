@@ -28,6 +28,13 @@
         "join_header": "Join an existing room:",
         "enter_button": "Enter",
         "refresh": "Refresh",
-        "create_header": "Or create a new one:"
+        "create_header": "Or create a new one:",
+        "login": "Login",
+        "rooms": "Rooms",
+        "logout": "Logout",
+        "en_lang": "English",
+        "pl_lang": "Polish",
+        "es_lang": "Spanish",
+        "fr_lang": "French"
     }
 }
