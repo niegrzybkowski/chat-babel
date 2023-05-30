@@ -6,7 +6,7 @@
           <div class="col-lg-7 mb-5 mb-lg-0 m-auto">
             <div class="card shadow">
               <div class="card-body py-5 px-md-5">
-                <h3 class="text-primary text-center">{{ localizations[this.language].chat_header }} {{ $route.params.roomName }}</h3>
+                <h3 class="text-primary text-center">{{ current_localization.chat_header }} {{ $route.params.roomName }}</h3>
                 <hr/>
                 <clip-loader v-if="fetchingMessages" color="gray" class="pt-2"></clip-loader>
                 <div v-else>
@@ -31,14 +31,14 @@
                       </p>
                       <pulse-loader v-else-if="message.translating" color="gray" size="11px"></pulse-loader>
                       <a v-else class="btn float-right btn-outline-success btn-sm text-uppercase" @click="translate_message(message)">
-                        {{ localizations[this.language].translate }}
+                        {{current_localization.translate }}
                       </a>
                     </div>
                   </div>
                   <div class="form-outline mt-4 w-50 mx-auto">
                     <textarea id="message" v-model="newMessage" class="form-control" style="resize: none;"></textarea>
                     <a class="btn float-right btn-primary btn-block mt-2" @click="send_message">
-                      {{ localizations[language].send }}
+                      {{ current_localization.send }}
                     </a>
                   </div>
                 </div>
@@ -64,39 +64,12 @@
     },
     data() {
       return {
-        /*
-        messages: [
-          {
-            "Sender": "John",
-            "Text": "hello world",
-            "Time": "1684606665856",
-            "Translations": {
-              "es":  "Hola Mundo",
-              "fr": "Bonjour le monde",
-              "pl":"Witaj świecie"
-            }
-          },
-          {
-            "Sender": "John2",
-            "ROOM_ID": "testaaaaaaaaaaaa",
-            "Text": "hello world"
-          },
-          {
-            "Sender": "John",
-            "ROOM_ID": "testaaaaaaaaaaaa",
-            "Text": "hello world"
-          },
-          {
-            "Sender": "John2",
-            "ROOM_ID": "testaaaaaaaaaaaa",
-            "Text": "hello world"
-          }
-        ],*/
         url: "https://ek5ajs509b.execute-api.us-east-1.amazonaws.com",
         roomName: this.$route.params.roomName,
         newMessage: '',
         fetchingMessages: true,
         messages: [],
+        default_language: "en",
         localizations: {
           "en": {
             chat_header: "Room:",
@@ -146,19 +119,12 @@
         'username',
         'language'
       ]),
-      /*translated_messages() {
-        let component = this
-        return this.messages.map((message) => {
-          let translated_message = {
-            "Sender": message.Sender,
-            "Text": message.Text
-          }
-          if (message.hasOwnProperty("Translations") && message.Translations.hasOwnProperty(component.language)) {
-            translated_message.Translation = message.Translations[component.language]
-          }
-          return translated_message
-        })
-      }*/
+      current_localization() {
+        if (!this.localizations[this.$store.state.language]){
+          return this.localizations[this.default_language]
+        }
+        return this.localizations[this.$store.state.language]
+       }
     },
     methods: {
       join_room() {
