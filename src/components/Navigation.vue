@@ -25,10 +25,10 @@
       <strong>{{ username }}</strong>
     </span>
     <select class="form-select me-5" style="width: fit-content;" @change="onLanguageChange($event)" v-model="language">
-      <option value="en">English {{current_localization.en_lang}} </option>
-      <option value="pl">polski {{current_localization.pl_lang}} </option>
-      <option value="es">español {{current_localization.es_lang}} </option>
-      <option value="fr">français {{current_localization.fr_lang}} </option>
+      <option value="en">English ({{current_localization.en_lang}}) </option>
+      <option value="pl">Polski ({{current_localization.pl_lang}}) </option>
+      <option value="es">Español ({{current_localization.es_lang}}) </option>
+      <option value="fr">Français ({{current_localization.fr_lang}}) </option>
     </select>
   </nav>
 </template>

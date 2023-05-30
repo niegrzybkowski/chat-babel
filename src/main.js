@@ -6,9 +6,10 @@ import localizations from './assets/localizations.json' assert {type: 'json'};
 
 const app = createApp(App)
 
+app.config.globalProperties.default_language = "en"
+app.config.globalProperties.localizations = localizations
+
 app.use(store)
   .use(router)
   .mount('#app')
 
-app.config.globalProperties.default_language = "en"
-app.config.globalProperties.localizations = localizations
