@@ -95,7 +95,7 @@
         roomName: '',
         formal: false,
         profanities: false,
-        room_list: [],
+        room_list: []
       }
     },
     computed: {
@@ -110,46 +110,46 @@
        }
     },
     methods: {
-      join_room(room) {
-        console.log(room)
-      },
-      error(message) {
-        this.notification = true
-        this.message = message
-        this.type = "error"
-      },
-      async fetch_rooms() {
-        this.loadingRooms = true;
-        let component = this;
-        axios.get(this.url + "/getRooms")
-        .then((res) => {
-          component.room_list = res.data.items;
-          this.loadingRooms = false;
-        })
-      },
-      async create_room() {
-        if (this.roomName == '') {
-          this.error('Invalid room name.');
-          return;
-        }
-        this.creatingRoom = true;
-        axios.post(this.url + "/createRoom", {
-          "NAME": this.roomName,
-          "Formality": this.formal, 
-          "Profanity": this.profanities
-        }).then(() => {
-          window.location.href = "/rooms/" + this.roomName;
-        }).catch((err) => {
-          this.error(err.response.data);
-        }).finally(() => {
-          this.creatingRoom = false;
-        });
-      }
+    join_room(room) {
+      console.log(room)
     },
-    components: {
-      ClipLoader,
-      PulseLoader,
-      Notification
+    error(message) {
+      this.notification = true
+      this.message = message
+      this.type = "error"
+    },
+    async fetch_rooms() {
+      this.loadingRooms = true;
+      let component = this;
+      axios.get(this.url + "/getRooms")
+      .then((res) => {
+        component.room_list = res.data.items;
+        this.loadingRooms = false;
+      })
+    },
+    async create_room() {
+      if (this.roomName == '') {
+        this.error('Invalid room name.');
+        return;
+      }
+      this.creatingRoom = true;
+      axios.post(this.url + "/createRoom", {
+        "NAME": this.roomName,
+        "Formality": this.formal, 
+        "Profanity": this.profanities
+      }).then(() => {
+        window.location.href = "/rooms/" + this.roomName;
+      }).catch((err) => {
+        this.error(err.response.data);
+      }).finally(() => {
+        this.creatingRoom = false;
+      });
     }
+  },
+  components: {
+    ClipLoader,
+    PulseLoader,
+    Notification
+  }
 }
 </script>

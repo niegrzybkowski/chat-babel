@@ -10,22 +10,14 @@
                 <hr/>
                 <clip-loader v-if="fetchingMessages" color="gray" class="pt-2"></clip-loader>
                 <div v-else>
-                  <div class="m-auto">
-                    <div class="border p-4" v-for="message in messages">
-                      <p class="mb-2">
-                        <b>{{ message.Sender }}</b>:
+                  <div class="m-auto" v-for="message in messages">
+                    <div :class="message.Sender == this.username ? 'border p-3 rounded mb-2 w-75 float-end' : 'border p-3 rounded mb-2 w-75'">
+                      <p class="mb-2" :style="message.Sender == this.username ? 'color: #0D6EFD;' : ''">
+                        <b>{{ message.Sender }}:</b>
                       </p>
                       <p style="text-align: justify;">
                         {{ message.Text }}
                       </p>
-                      <!--
-                      <p v-if="message.hasOwnProperty('Translation')">
-                        {{ localizations[language].translation_prefix }} {{ message.Translation }}
-                      </p>
-                      <a v-else class="btn float-right btn-primary btn-block m-2 w-10" @click="join_room(room)">
-                        {{ localizations[language].translate }}
-                      </a>
-                      -->
                       <p v-if="message.Translations[this.language]" class="mb-0 text-success" style="text-align: justify">
                         <i>{{ message.Translations[this.language]}}</i>
                       </p>
@@ -61,6 +53,9 @@
   export default {
     mounted() {
       this.fetch_messages();
+      this.timer = setInterval(() => {
+        this.fetch_messages();
+      }, 500)
     },
     data() {
       return {
@@ -69,6 +64,7 @@
         newMessage: '',
         fetchingMessages: true,
         messages: [],
+        timer: null
       }
     },
     computed: {
@@ -132,6 +128,9 @@
     components: {
       ClipLoader,
       PulseLoader
+    },
+    beforeUnmount() {
+      clearInterval(this.timer);
     }
   }
 </script>

@@ -133,7 +133,7 @@
               resolve(component.error(err.message)) // no real way to localize this...
             }
             else {
-              resolve(component.info(this.get_localization().register_success))
+              resolve(component.info(component.get_localization().register_success))
             }
           })
         )
