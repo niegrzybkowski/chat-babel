@@ -51,9 +51,6 @@
                   <div class="form-outline mb-3" style="overflow: hidden; white-space: nowrap;">
                     <input type="checkbox"  v-model="formal" id="formal" name="formal">
                     <label class="form-label m-2" for="formal">{{ current_localization.formal_label }}</label>
-                    
-                    <input type="checkbox"  v-model="profanities" id="profanities" name="profanities">
-                    <label class="form-label m-2" for="profanities">{{ current_localization.profanities_label }}</label>
                   </div>
 
                   <!-- Submit button -->
@@ -94,7 +91,6 @@
         type: 'error',
         roomName: '',
         formal: false,
-        profanities: false,
         room_list: []
       }
     },
@@ -135,8 +131,7 @@
       this.creatingRoom = true;
       axios.post(this.url + "/createRoom", {
         "NAME": this.roomName,
-        "Formality": this.formal, 
-        "Profanity": this.profanities
+        "Formality": this.formal
       }).then(() => {
         window.location.href = "/rooms/" + this.roomName;
       }).catch((err) => {

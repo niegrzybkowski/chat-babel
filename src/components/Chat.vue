@@ -45,8 +45,9 @@
 
 
 <script>
-  import axios from 'axios'
   import { mapState } from 'vuex'
+  import { Mutex } from 'async-mutex'
+  import axios from 'axios'
   import ClipLoader from 'vue-spinner/src/ClipLoader.vue'
   import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
@@ -64,7 +65,8 @@
         newMessage: '',
         fetchingMessages: true,
         messages: [],
-        timer: null
+        timer: null,
+        mutex: new Mutex() // mutex for fetching and translating actions
       }
     },
     computed: {
@@ -84,14 +86,20 @@
         console.log(this.language);
       },
       async fetch_messages() {
-        //this.fetchingMessages = true;
+        let release = await this.mutex.acquire();
         axios.get(this.url + "/getMessages?RoomID=" + this.roomName)
         .then((res) => {
+          const old_messages = [...this.messages];
           this.messages = res.data.items.sort((m1, m2) => m1.Time - m2.Time);
-          this.messages.map(message => message['translating'] = false);
+          this.messages.map(message => {
+            const old_message = old_messages.filter(old_message => old_message.ID == message.ID);
+            if (old_message.length) message['translating'] = old_message[0].translating;
+            else message['translating'] = false;
+          });
         })
         .finally(() => {
           this.fetchingMessages = false;
+          release();
         })
       },
       async send_message() {
@@ -113,15 +121,18 @@
       },
       async translate_message(message) {
         message.translating = true;
+        let release = await this.mutex.acquire();
+        const newMessage = this.messages.filter(m => message.ID == m.ID)[0] // the one after the fetch
         axios.get(this.url + "/translate?ID=" + message.ID + "&lang=" + this.language)
         .then((res) => {
-          message.Translations[this.language] = res.data;
+          newMessage.Translations[this.language] = res.data;
         })
         .catch((err) => {
           console.log(err);
         })
         .finally(() => {
-          message.translating = false;
+          newMessage.translating = false;
+          release();
         })
       }
     },
