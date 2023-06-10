@@ -99,7 +99,7 @@
           const old_messages = [...this.messages];
           this.messages = res.data.items.sort((m1, m2) => m1.Time - m2.Time);
           this.messages.map(message => {
-            const old_message = old_messages.filter(old_message => old_message.ID == message.ID);
+            const old_message = old_messages.filter(old_message => old_message.ID != message.ID);
             if (old_message.length) message['translating'] = old_message[0].translating;
             else message['translating'] = false;
           });
@@ -116,7 +116,7 @@
           const old_messages = [...this.messages];
           this.messages = res.data.items.sort((m1, m2) => m1.Time - m2.Time);
           this.messages.map(message => {
-            const old_message = old_messages.filter(old_message => old_message.ID == message.ID);
+            const old_message = old_messages.filter(old_message => old_message.ID != message.ID);
             if (old_message.length) message['translating'] = old_message[0].translating;
             else message['translating'] = false;
           });
