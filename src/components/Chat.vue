@@ -11,7 +11,7 @@
                 <clip-loader v-if="fetchingMessages" color="gray" class="pt-2"></clip-loader>
                 <div v-else>
                   <div class="m-auto" v-for="message in messages">
-                    <div :class="message.Sender == this.username ? 'border p-3 rounded mb-2 w-75 float-end' : 'border p-3 rounded mb-2 w-75'">
+                    <div :class="message.Sender == this.username ? 'border p-3 rounded mb-2 w-75 float-end' : 'border p-3 rounded mb-2 w-75 float-start'">
                       <p class="mb-2" :style="message.Sender == this.username ? 'color: #0D6EFD;' : ''">
                         <b>{{ message.Sender }}:</b>
                       </p>
