@@ -101,12 +101,13 @@
           if (new_messages.length == 0) {
             return
           }
-          this.messages = old_messages.concat(new_messages).sort((m1, m2) => m1.Time - m2.Time);
+          this.messages = old_messages.concat(new_messages).sort((m1, m2) => m1.Time - m2.Time);          
           this.messages.map(message => {
             const old_message = old_messages.filter(old_message => old_message.ID == message.ID);
             if (old_message.length) message['translating'] = old_message[0].translating;
             else message['translating'] = false;
           });
+          this.messages = [...new Map(this.messages.map(item => [item.ID, item])).values()]
         })
         .finally(() => {
           this.fetchingMessages = false;
