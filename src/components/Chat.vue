@@ -54,9 +54,16 @@
   export default {
     mounted() {
       this.load_latest_messages();
-      this.timer = setInterval(() => {
-        this.fetch_messages();
-      }, 500)
+      let timer = this.timer;
+
+      setTimeout( () => {
+        timer = setInterval(
+          () => {
+            this.fetch_messages();
+          }, 
+          500
+        )
+      }, 1000)
     },
     data() {
       return {
