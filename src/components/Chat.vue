@@ -53,7 +53,7 @@
 
   export default {
     mounted() {
-      this.fetch_messages();
+      this.load_latest_messages();
       this.timer = setInterval(() => {
         this.fetch_messages();
       }, 500)
@@ -88,6 +88,23 @@
       async fetch_messages() {
         let release = await this.mutex.acquire();
         axios.get(this.url + "/getMessages?RoomID=" + this.roomName)
+        .then((res) => {
+          const old_messages = [...this.messages];
+          this.messages = res.data.items.sort((m1, m2) => m1.Time - m2.Time);
+          this.messages.map(message => {
+            const old_message = old_messages.filter(old_message => old_message.ID == message.ID);
+            if (old_message.length) message['translating'] = old_message[0].translating;
+            else message['translating'] = false;
+          });
+        })
+        .finally(() => {
+          this.fetchingMessages = false;
+          release();
+        })
+      },
+      async load_latest_messages() {
+        let release = await this.mutex.acquire();
+        axios.get(this.url + "/joinFetch?RoomID=" + this.roomName)
         .then((res) => {
           const old_messages = [...this.messages];
           this.messages = res.data.items.sort((m1, m2) => m1.Time - m2.Time);
