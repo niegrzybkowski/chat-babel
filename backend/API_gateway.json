@@ -1,0 +1,133 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "MessageGetAPI",
+    "version" : "2023-06-13 11:30:08UTC"
+  },
+  "servers" : [ {
+    "url" : "https://ek5ajs509b.execute-api.us-east-1.amazonaws.com/{basePath}",
+    "variables" : {
+      "basePath" : {
+        "default" : ""
+      }
+    }
+  } ],
+  "paths" : {
+    "/getMessages" : {
+      "get" : {
+        "responses" : {
+          "default" : {
+            "description" : "Default response for GET /getMessages"
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "payloadFormatVersion" : "2.0",
+          "type" : "aws_proxy",
+          "httpMethod" : "POST",
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:839525500162:function:get_room_messages/invocations",
+          "connectionType" : "INTERNET"
+        }
+      }
+    },
+    "/getRooms" : {
+      "get" : {
+        "responses" : {
+          "default" : {
+            "description" : "Default response for GET /getRooms"
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "payloadFormatVersion" : "2.0",
+          "type" : "aws_proxy",
+          "httpMethod" : "POST",
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:839525500162:function:get_rooms/invocations",
+          "connectionType" : "INTERNET"
+        }
+      }
+    },
+    "/joinFetch" : {
+      "get" : {
+        "responses" : {
+          "default" : {
+            "description" : "Default response for GET /joinFetch"
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "payloadFormatVersion" : "2.0",
+          "type" : "aws_proxy",
+          "httpMethod" : "POST",
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:839525500162:function:fetch_latest_messages/invocations",
+          "connectionType" : "INTERNET"
+        }
+      }
+    },
+    "/translate" : {
+      "get" : {
+        "responses" : {
+          "default" : {
+            "description" : "Default response for GET /translate"
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "payloadFormatVersion" : "2.0",
+          "type" : "aws_proxy",
+          "httpMethod" : "POST",
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:839525500162:function:translate_text/invocations",
+          "connectionType" : "INTERNET"
+        }
+      }
+    },
+    "/createRoom" : {
+      "post" : {
+        "responses" : {
+          "default" : {
+            "description" : "Default response for POST /createRoom"
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "payloadFormatVersion" : "2.0",
+          "type" : "aws_proxy",
+          "httpMethod" : "POST",
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:839525500162:function:create_room/invocations",
+          "connectionType" : "INTERNET",
+          "timeoutInMillis" : 30000
+        }
+      }
+    },
+    "/sendMessage" : {
+      "post" : {
+        "responses" : {
+          "default" : {
+            "description" : "Default response for POST /sendMessage"
+          }
+        },
+        "x-amazon-apigateway-integration" : {
+          "payloadFormatVersion" : "2.0",
+          "type" : "aws_proxy",
+          "httpMethod" : "POST",
+          "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:839525500162:function:send_message/invocations",
+          "connectionType" : "INTERNET"
+        }
+      }
+    }
+  },
+  "components" : {
+    "x-amazon-apigateway-integrations" : {
+      "unusedIntegration_0dq1xpl" : {
+        "payloadFormatVersion" : "2.0",
+        "type" : "aws_proxy",
+        "httpMethod" : "POST",
+        "uri" : "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:839525500162:function:get_ip/invocations",
+        "connectionType" : "INTERNET"
+      }
+    }
+  },
+  "x-amazon-apigateway-cors" : {
+    "allowMethods" : [ "*" ],
+    "allowHeaders" : [ "*" ],
+    "maxAge" : 0,
+    "allowCredentials" : false,
+    "allowOrigins" : [ "*" ]
+  },
+  "x-amazon-apigateway-importexport-version" : "1.0"
+}
